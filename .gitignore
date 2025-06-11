@@ -1,0 +1,5 @@
+.env
+secret.key
+memories.json
+passwords.db
+passwords.json
