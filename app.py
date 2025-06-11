@@ -6,7 +6,6 @@
 import streamlit as st
 import sqlite3
 import hashlib
-import pygame
 import time
 import requests
 from streamlit_lottie import st_lottie
@@ -25,8 +24,6 @@ from utils.send_love import *
 from utils.surprise import *
 from utils.face_recog_temp import save_password, retrieve_password, capture_live_image
 
-# Initialize pygame for audio
-pygame.mixer.init()
 
 # Ensure required folders exist
 os.makedirs("sync_folder", exist_ok=True)
@@ -54,14 +51,21 @@ def load_lottie_file(filepath: str):
     except:
         return None
 
+# def play_sound(sound_file):
+#     """Play sound file"""
+#     try:
+#         if os.path.exists(f"assets/{sound_file}"):
+#             pygame.mixer.music.load(f"assets/{sound_file}")
+#             pygame.mixer.music.play()
+#     except:
+#         pass
+
 def play_sound(sound_file):
-    """Play sound file"""
-    try:
-        if os.path.exists(f"assets/{sound_file}"):
-            pygame.mixer.music.load(f"assets/{sound_file}")
-            pygame.mixer.music.play()
-    except:
-        pass
+    if os.path.exists(f"assets/{sound_file}"):
+        with open(f"assets/{sound_file}", "rb") as f:
+            audio_bytes = f.read()
+            st.audio(audio_bytes, format="audio/wav")
+
 
 def play_sound_base64(sound_file):
     """Play sound using base64 encoding for Streamlit"""
@@ -626,11 +630,11 @@ def create_main_app():
                     if st.session_state.selected_option == correct:
                         st.success("🎉 Correct!")
                         st.session_state.score += 1
-                        play_sound("assets/correct.wav")
+                        st.audio("assets/correct.wav", format="audio/wav")
 
                     else:
                         st.error(f"❌ Wrong! Correct answer: **{correct}**")
-                        play_sound("assets/wrong.wav")
+                        st.audio("assets/wrong.wav", format="audio/wav")
 
                     st.session_state.show_result = True
                     time.sleep(3)
