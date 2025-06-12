@@ -3,101 +3,6 @@ import pandas as pd
 import time
 import random
 
-
-def word_scramble_game():
-    st.subheader("🔤 Word Scramble")
-    st.write("Unscramble the word! Can you guess it?")
-
-    # Sample word list — replace with 200+ words if needed
-    word_list = [
-        "apple", "banana", "orange", "grape", "peach", "mango", "lemon", "melon", "kiwi", "pear",
-    "chair", "table", "bed", "sofa", "lamp", "desk", "shelf", "stool", "rug", "couch",
-    "car", "bike", "bus", "train", "plane", "boat", "scooter", "truck", "van", "taxi",
-    "cat", "dog", "mouse", "horse", "sheep", "goat", "tiger", "lion", "monkey", "zebra",
-    "book", "pen", "pencil", "paper", "eraser", "ruler", "notebook", "marker", "crayon", "stapler",
-    "milk", "water", "juice", "soda", "coffee", "tea", "soup", "bread", "rice", "pizza",
-    "phone", "laptop", "tablet", "camera", "speaker", "printer", "screen", "monitor", "keyboard", "mouse",
-    "shirt", "pants", "shorts", "dress", "skirt", "shoes", "socks", "hat", "gloves", "jacket",
-    "door", "window", "wall", "floor", "ceiling", "roof", "stairs", "balcony", "garage", "garden",
-    "egg", "cheese", "butter", "jam", "honey", "salt", "sugar", "pepper", "oil", "vinegar",
-    "cloud", "rain", "snow", "storm", "wind", "sun", "fog", "hail", "ice", "lightning",
-    "bag", "wallet", "purse", "backpack", "suitcase", "belt", "watch", "ring", "bracelet", "necklace",
-    "movie", "music", "song", "dance", "game", "puzzle", "quiz", "race", "match", "show",
-    "doctor", "nurse", "teacher", "student", "driver", "chef", "police", "guard", "pilot", "farmer",
-    "school", "college", "office", "library", "hospital", "market", "restaurant", "theater", "stadium", "zoo",
-    "air", "fire", "water", "earth", "space", "time", "light", "dark", "sound", "energy",
-    "happy", "sad", "angry", "tired", "excited", "nervous", "bored", "scared", "proud", "calm",
-    "clean", "dirty", "hot", "cold", "dry", "wet", "soft", "hard", "empty", "full"
-    ]
-
-    # Initialize persistent game state
-    if "scramble_round" not in st.session_state:
-        st.session_state.scramble_round = 0
-    if "scramble_score" not in st.session_state:
-        st.session_state.scramble_score = 0
-    if "scramble_streak" not in st.session_state:
-        st.session_state.scramble_streak = 0
-    if "scramble_best_streak" not in st.session_state:
-        st.session_state.scramble_best_streak = 0
-
-    # Generate new word if required
-    if (
-        "scramble_word" not in st.session_state
-        or st.session_state.get("scramble_new", True)
-    ):
-        while True:
-            word = random.choice(word_list)
-            scrambled = "".join(random.sample(word, len(word)))
-            if scrambled != word:
-                break  # Ensure it's actually scrambled
-
-        st.session_state.scramble_word = word
-        st.session_state.scrambled = scrambled
-        st.session_state.scramble_attempts = 0
-        st.session_state.scramble_new = False
-
-    # Display scrambled word
-    st.write(f"Scrambled word: **{st.session_state.scrambled}**")
-
-    # Input and button with dynamic keys
-    guess = st.text_input(
-        "Your guess:",
-        key=f"scramble_guess_{st.session_state.scramble_round}"
-    )
-
-    if st.button("Submit Guess", key=f"scramble_submit_{st.session_state.scramble_round}"):
-        st.session_state.scramble_attempts += 1
-        if guess.lower() == st.session_state.scramble_word:
-            # ✅ Update score
-            points = max(10 - st.session_state.scramble_attempts + 1, 1)
-            st.session_state.scramble_score += points
-
-            # ✅ Update streaks
-            st.session_state.scramble_streak += 1
-            if st.session_state.scramble_streak > st.session_state.scramble_best_streak:
-                st.session_state.scramble_best_streak = st.session_state.scramble_streak
-
-            st.success(
-                f"🎉 Correct! The word was '{st.session_state.scramble_word}'. "
-                f"Attempts: {st.session_state.scramble_attempts}, Points: {points}"
-            )
-            st.info(f"🔥 Current Streak: {st.session_state.scramble_streak} | 🏆 Best Streak: {st.session_state.scramble_best_streak}")
-
-            if st.button("Play Again", key=f"scramble_restart_{st.session_state.scramble_round}"):
-                st.session_state.scramble_new = True
-                st.session_state.scramble_round += 1
-                st.rerun()
-        else:
-            st.error("❌ Incorrect. Try again!")
-            st.info(f"📊 Attempts so far: {st.session_state.scramble_attempts}")
-
-    # Always show score and streak at bottom
-    st.markdown("---")
-    st.write(f"🏆 Total Score: **{st.session_state.scramble_score}**")
-    st.write(f"🔥 Current Streak: **{st.session_state.scramble_streak}**")
-    st.write(f"🥇 Best Streak: **{st.session_state.scramble_best_streak}**")
-
-
 import streamlit as st
 import random
 
@@ -181,3 +86,101 @@ def math_challenge_game():
         st.write(f"🎯 Accuracy: **{accuracy:.1f}%**")
     st.write(f"🔥 Current Streak: **{st.session_state.math_streak}**")
     st.write(f"🥇 Best Streak: **{st.session_state.math_best_streak}**")
+
+
+import streamlit as st
+import random
+
+def word_scramble_game():
+    st.subheader("🔤 Word Scramble")
+    st.write("Unscramble the word! Can you guess it?")
+
+    word_list = [
+        "apple", "banana", "orange", "grape", "peach", "mango", "lemon", "melon", "kiwi", "pear",
+    "chair", "table", "bed", "sofa", "lamp", "desk", "shelf", "stool", "rug", "couch",
+    "car", "bike", "bus", "train", "plane", "boat", "scooter", "truck", "van", "taxi",
+    "cat", "dog", "mouse", "horse", "sheep", "goat", "tiger", "lion", "monkey", "zebra",
+    "book", "pen", "pencil", "paper", "eraser", "ruler", "notebook", "marker", "crayon", "stapler",
+    "milk", "water", "juice", "soda", "coffee", "tea", "soup", "bread", "rice", "pizza",
+    "phone", "laptop", "tablet", "camera", "speaker", "printer", "screen", "monitor", "keyboard", "mouse",
+    "shirt", "pants", "shorts", "dress", "skirt", "shoes", "socks", "hat", "gloves", "jacket",
+    "door", "window", "wall", "floor", "ceiling", "roof", "stairs", "balcony", "garage", "garden",
+    "egg", "cheese", "butter", "jam", "honey", "salt", "sugar", "pepper", "oil", "vinegar",
+    "cloud", "rain", "snow", "storm", "wind", "sun", "fog", "hail", "ice", "lightning",
+    "bag", "wallet", "purse", "backpack", "suitcase", "belt", "watch", "ring", "bracelet", "necklace",
+    "movie", "music", "song", "dance", "game", "puzzle", "quiz", "race", "match", "show",
+    "doctor", "nurse", "teacher", "student", "driver", "chef", "police", "guard", "pilot", "farmer",
+    "school", "college", "office", "library", "hospital", "market", "restaurant", "theater", "stadium", "zoo",
+    "air", "fire", "water", "earth", "space", "time", "light", "dark", "sound", "energy",
+    "happy", "sad", "angry", "tired", "excited", "nervous", "bored", "scared", "proud", "calm",
+    "clean", "dirty", "hot", "cold", "dry", "wet", "soft", "hard", "empty", "full"
+    ]
+
+    # Initialize session states
+    if "scramble_round" not in st.session_state:
+        st.session_state.scramble_round = 0
+    if "scramble_score" not in st.session_state:
+        st.session_state.scramble_score = 0
+    if "scramble_streak" not in st.session_state:
+        st.session_state.scramble_streak = 0
+    if "scramble_best_streak" not in st.session_state:
+        st.session_state.scramble_best_streak = 0
+    if "scramble_new" not in st.session_state:
+        st.session_state.scramble_new = True
+
+    # Generate new word if needed
+    if st.session_state.scramble_new:
+        while True:
+            word = random.choice(word_list)
+            scrambled = "".join(random.sample(word, len(word)))
+            if scrambled != word:
+                break
+        st.session_state.scramble_word = word
+        st.session_state.scrambled = scrambled
+        st.session_state.scramble_attempts = 0
+        st.session_state.scramble_new = False
+
+    st.write(f"Scrambled word: **{st.session_state.scrambled}**")
+
+    guess = st.text_input("Your guess:", key=f"scramble_guess_{st.session_state.scramble_round}")
+
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col1:
+        submit = st.button("✅ Submit", key=f"scramble_submit_{st.session_state.scramble_round}")
+    with col2:
+        skip = st.button("⏭️ Skip", key=f"scramble_skip_{st.session_state.scramble_round}")
+    with col3:
+        reset = False  # placeholder for Play Again button
+
+    if submit:
+        st.session_state.scramble_attempts += 1
+        if guess.lower() == st.session_state.scramble_word:
+            points = max(10 - st.session_state.scramble_attempts + 1, 1)
+            st.session_state.scramble_score += points
+            st.session_state.scramble_streak += 1
+            if st.session_state.scramble_streak > st.session_state.scramble_best_streak:
+                st.session_state.scramble_best_streak = st.session_state.scramble_streak
+
+            st.success(f"🎉 Correct! The word was '{st.session_state.scramble_word}'. Attempts: {st.session_state.scramble_attempts}, Points: {points}")
+            st.info(f"🔥 Streak: {st.session_state.scramble_streak} | 🥇 Best: {st.session_state.scramble_best_streak}")
+
+            if st.button("🔄 Play Again", key=f"scramble_restart_{st.session_state.scramble_round}"):
+                st.session_state.scramble_round += 1
+                st.session_state.scramble_new = True
+                st.experimental_rerun()
+        else:
+            st.session_state.scramble_streak = 0
+            st.error("❌ Incorrect. Try again!")
+
+    elif skip:
+        st.warning(f"⏭️ Skipped! The word was '{st.session_state.scramble_word}'.")
+        st.session_state.scramble_streak = 0
+        st.session_state.scramble_round += 1
+        st.session_state.scramble_new = True
+        st.experimental_rerun()
+
+    # Show stats
+    st.markdown("---")
+    st.write(f"🏆 Score: **{st.session_state.scramble_score}**")
+    st.write(f"🔥 Current Streak: **{st.session_state.scramble_streak}**")
+    st.write(f"🥇 Best Streak: **{st.session_state.scramble_best_streak}**")
