@@ -44,7 +44,7 @@ def word_scramble_game():
     "car", "bus", "train", "plane", "boat", "bicycle", "motorcycle", "truck", "auto", "rickshaw", "taxi", "scooter", "ship", "van", "ambulance",
     # Festivals & Celebrations
     "birthday", "party", "cake", "gift", "balloon", "festival", "holiday", "wedding", "anniversary", "fireworks", "music", "dance", "song", "game", "prize"
-]
+    ]
 
     # Pick a new word if starting or after "Play Again"
     if "scramble_word" not in st.session_state or st.session_state.get("scramble_new", False):
@@ -118,6 +118,8 @@ def math_challenge_game():
             st.session_state.math_new = True
             st.rerun()  # Immediately show a new question
         except:
-            st.warning("Please enter a valid number.")
+            st.warning("")
 
     st.info(f"Score: {st.session_state.math_score} / {st.session_state.math_attempts}")
+
+
