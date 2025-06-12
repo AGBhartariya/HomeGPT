@@ -86,7 +86,7 @@ def word_scramble_game():
             if st.button("Play Again", key=f"scramble_restart_{st.session_state.scramble_round}"):
                 st.session_state.scramble_new = True
                 st.session_state.scramble_round += 1
-                st.experimental_rerun()
+                st.rerun()
         else:
             st.error("❌ Incorrect. Try again!")
             st.info(f"📊 Attempts so far: {st.session_state.scramble_attempts}")
@@ -168,7 +168,7 @@ def math_challenge_game():
                 st.session_state.math_score -= 2  # penalty for wrong
                 st.session_state.math_streak = 0
             st.session_state.math_new = True
-            st.experimental_rerun()
+            st.rerun()
         except ValueError:
             st.warning("⚠️ Please enter a valid number.")
 
