@@ -64,7 +64,7 @@ def word_scramble_game():
             if st.button("Play Again", key="scramble_restart"):
                 st.session_state.scramble_new = True
                 st.session_state["scramble_guess"] = ""  # Reset input
-                st.experimental_rerun()
+                st.rerun()
         else:
             st.error("❌ Incorrect. Try again!")
 
@@ -116,7 +116,7 @@ def math_challenge_game():
             else:
                 st.error(f"❌ Incorrect. The correct answer was {st.session_state.math_answer}.")
             st.session_state.math_new = True
-            st.experimental_rerun()  # Immediately show a new question
+            st.rerun()  # Immediately show a new question
         except:
             st.warning("Please enter a valid number.")
 
