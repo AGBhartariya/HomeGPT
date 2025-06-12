@@ -167,7 +167,7 @@ def word_scramble_game():
             if st.button("🔄 Play Again", key=f"scramble_restart_{st.session_state.scramble_round}"):
                 st.session_state.scramble_round += 1
                 st.session_state.scramble_new = True
-                st.experimental_rerun()
+                st.rerun()
         else:
             st.session_state.scramble_streak = 0
             st.error("❌ Incorrect. Try again!")
@@ -177,7 +177,7 @@ def word_scramble_game():
         st.session_state.scramble_streak = 0
         st.session_state.scramble_round += 1
         st.session_state.scramble_new = True
-        st.experimental_rerun()
+        st.rerun()
 
     # Show stats
     st.markdown("---")
