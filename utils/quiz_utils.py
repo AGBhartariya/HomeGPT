@@ -47,7 +47,7 @@ def word_scramble_game():
     ]
 
     # Pick a new word if starting or after "Play Again"
-    if "scramble_word" not in st.session_state or st.session_state.get("scramble_new", False):
+    if "scramble_word" not in st.session_state or st.session_state.get("scramble_new", True):
         word = random.choice(word_list)
         scrambled = "".join(random.sample(word, len(word)))
         st.session_state.scramble_word = word
