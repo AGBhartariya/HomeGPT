@@ -4,44 +4,10 @@ import time
 import random
 
 
-def simon_says_game():
-    st.subheader("🎨 Simon Says (Color Sequence Game)")
-    st.write("Repeat the color sequence. Each round, a new color is added. How long can you go?")
 
-    colors = ["🟥 Red", "🟦 Blue", "🟩 Green", "🟨 Yellow"]
-    if "simon_sequence" not in st.session_state:
-        st.session_state.simon_sequence = [random.choice(colors) for _ in range(2)]
-        st.session_state.simon_user_input = []
-        st.session_state.simon_round = 1
-        st.session_state.simon_game_over = False
 
-    if not st.session_state.simon_game_over:
-        st.markdown(f"**Round {st.session_state.simon_round}**")
-        st.write("Simon says:")
-        st.write(" ➡️ " + " ".join(st.session_state.simon_sequence))
-        st.info("Memorize the sequence, then repeat it below.")
-        user_input = st.multiselect(
-            "Repeat the color sequence in order:",
-            options=colors,
-            default=[],
-            key=f"simon_input_{st.session_state.simon_round}"
-        )
-        if st.button("Submit Sequence", key=f"simon_submit_{st.session_state.simon_round}"):
-            if user_input == st.session_state.simon_sequence:
-                st.success("✅ Correct! Next round...")
-                st.session_state.simon_sequence.append(random.choice(colors))
-                st.session_state.simon_round += 1
-                st.rerun()
-            else:
-                st.error("❌ Wrong sequence! Game Over.")
-                st.session_state.simon_game_over = True
-    else:
-        st.warning(f"Game Over! You reached round {st.session_state.simon_round}.")
-        if st.button("Play Again", key="simon_restart"):
-            for k in ["simon_sequence", "simon_user_input", "simon_round", "simon_game_over"]:
-                if k in st.session_state:
-                    del st.session_state[k]
-            st.rerun()
+
+
 
 def word_scramble_game():
     st.subheader("🔤 Word Scramble")
@@ -80,13 +46,14 @@ def word_scramble_game():
     "birthday", "party", "cake", "gift", "balloon", "festival", "holiday", "wedding", "anniversary", "fireworks", "music", "dance", "song", "game", "prize"
 ]
 
+    # Pick a new word if starting or after "Play Again"
     if "scramble_word" not in st.session_state or st.session_state.get("scramble_new", False):
         word = random.choice(word_list)
         scrambled = "".join(random.sample(word, len(word)))
         st.session_state.scramble_word = word
         st.session_state.scrambled = scrambled
         st.session_state.scramble_attempts = 0
-        st.session_state.scramble_new = False
+        st.session_state.scramble_new = False  # Reset flag
 
     st.write(f"Scrambled word: **{st.session_state.scrambled}**")
     guess = st.text_input("Your guess:", key="scramble_guess")
@@ -96,49 +63,61 @@ def word_scramble_game():
             st.success(f"🎉 Correct! The word was '{st.session_state.scramble_word}'. Attempts: {st.session_state.scramble_attempts}")
             if st.button("Play Again", key="scramble_restart"):
                 st.session_state.scramble_new = True
-                st.rerun()
+                st.session_state["scramble_guess"] = ""  # Reset input
+                st.experimental_rerun()
         else:
             st.error("❌ Incorrect. Try again!")
 
 
 def math_challenge_game():
-    st.subheader("➕ Simple Math Challenge")
-    st.write("Solve as many math questions as you can!")
+    st.subheader("➕ Math Challenge")
+    st.write("Try these trickier math questions!")
 
-    if "math_num1" not in st.session_state or st.session_state.get("math_new", False):
-        st.session_state.math_num1 = random.randint(1, 20)
-        st.session_state.math_num2 = random.randint(1, 20)
-        st.session_state.math_op = random.choice(["+", "-", "*"])
+    operators = ["+", "-", "*", "/", "**"]
+    # Generate a new question if needed
+    if "math_question" not in st.session_state or st.session_state.get("math_new", False):
+        op = random.choice(operators)
+        if op == "+":
+            num1, num2 = random.randint(10, 99), random.randint(10, 99)
+            answer = num1 + num2
+            q = f"{num1} + {num2}"
+        elif op == "-":
+            num1, num2 = random.randint(50, 150), random.randint(10, 49)
+            answer = num1 - num2
+            q = f"{num1} - {num2}"
+        elif op == "*":
+            num1, num2 = random.randint(5, 20), random.randint(5, 20)
+            answer = num1 * num2
+            q = f"{num1} × {num2}"
+        elif op == "/":
+            num2 = random.randint(2, 12)
+            answer = random.randint(2, 12)
+            num1 = num2 * answer
+            q = f"{num1} ÷ {num2}"
+        else:  # Exponent
+            num1 = random.randint(2, 5)
+            num2 = random.randint(2, 3)
+            answer = num1 ** num2
+            q = f"{num1}^{num2}"
+        st.session_state.math_question = q
+        st.session_state.math_answer = answer
+        st.session_state.math_new = False
         st.session_state.math_score = st.session_state.get("math_score", 0)
         st.session_state.math_attempts = st.session_state.get("math_attempts", 0)
-        st.session_state.math_new = False
 
-    num1 = st.session_state.math_num1
-    num2 = st.session_state.math_num2
-    op = st.session_state.math_op
-    if op == "+":
-        answer = num1 + num2
-    elif op == "-":
-        answer = num1 - num2
-    else:
-        answer = num1 * num2
-
-    st.write(f"Solve: **{num1} {op} {num2} = ?**")
-    user_ans = st.text_input("Your answer:", key="math_answer")
+    st.write(f"Solve: **{st.session_state.math_question} = ?**")
+    user_ans = st.text_input("Your answer:", key="math_answer_input")
     if st.button("Submit Answer", key="math_submit"):
         st.session_state.math_attempts += 1
         try:
-            if int(user_ans) == answer:
+            if float(user_ans) == float(st.session_state.math_answer):
                 st.success("✅ Correct!")
                 st.session_state.math_score += 1
-                st.session_state.math_new = True
-                st.rerun()
             else:
-                st.error(f"❌ Incorrect. The correct answer was {answer}.")
-                st.session_state.math_new = True
-                st.rerun()
+                st.error(f"❌ Incorrect. The correct answer was {st.session_state.math_answer}.")
+            st.session_state.math_new = True
+            st.experimental_rerun()  # Immediately show a new question
         except:
             st.warning("Please enter a valid number.")
 
     st.info(f"Score: {st.session_state.math_score} / {st.session_state.math_attempts}")
-
