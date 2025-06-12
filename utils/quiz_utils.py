@@ -163,21 +163,21 @@ def word_scramble_game():
 
             st.success(f"🎉 Correct! The word was '{st.session_state.scramble_word}'. Attempts: {st.session_state.scramble_attempts}, Points: {points}")
             st.info(f"🔥 Streak: {st.session_state.scramble_streak} | 🥇 Best: {st.session_state.scramble_best_streak}")
-
-            if st.button("🔄 Play Again", key=f"scramble_restart_{st.session_state.scramble_round}"):
-                st.session_state.scramble_round += 1
-                st.session_state.scramble_new = True
-                st.rerun()
         else:
             st.session_state.scramble_streak = 0
             st.error("❌ Incorrect. Try again!")
 
-    elif skip:
+    if skip:
         st.warning(f"⏭️ Skipped! The word was '{st.session_state.scramble_word}'.")
         st.session_state.scramble_streak = 0
         st.session_state.scramble_round += 1
         st.session_state.scramble_new = True
         st.rerun()
+
+    if st.button("🔄 Play Again", key=f"scramble_restart_{st.session_state.scramble_round}"):
+                st.session_state.scramble_round += 1
+                st.session_state.scramble_new = True
+                st.rerun()
 
     # Show stats
     st.markdown("---")
