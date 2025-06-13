@@ -601,6 +601,8 @@ def create_login_page():
         #         st.balloons()
         #         st.rerun()
         if st.button("🚀 Login"):
+            username = st.session_state.get("login_username", username)
+            password = st.session_state.get("login_password", password)
             user = login_user(username, password)
         if user:
             updated_user = update_login_details(username)
