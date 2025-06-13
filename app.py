@@ -502,19 +502,8 @@ def show_welcome_animation():
             greeting = "Good Night! 🌙"
         st.markdown(f'<div class="time-greeting">{greeting}</div>', unsafe_allow_html=True)
         st.markdown('<div class="welcome-message">Your personal AI assistant is ready to help! 💖</div>', unsafe_allow_html=True)
-def register_user(username, password):
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
-    try:
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)",
-                  (username, hash_password(password)))
-        conn.commit()
-        return True
-    except sqlite3.IntegrityError:
-        return False
-    finally:
-        conn.close()
-        
+
+
 def login_user(username, password):
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
@@ -544,19 +533,16 @@ def update_login_details(username):
 def init_database():
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
-    
     c.execute("""
         CREATE TABLE IF NOT EXISTS users (
             username TEXT PRIMARY KEY,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            login_count INTEGER DEFAULT 0,
+            last_login TEXT
         )
     """)
-    
     conn.commit()
     conn.close()
-
-
-
 
 
 def register_user(username, password):
