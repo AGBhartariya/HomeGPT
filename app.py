@@ -574,7 +574,7 @@ def register_user(username, password):
 
 def create_login_page():
 
-    show_welcome_animation()
+    
     
 
     tab1, tab2 = st.tabs(["🔓 Login", "🆕 Register"])
@@ -590,13 +590,14 @@ def create_login_page():
                 updated_user = update_login_details(username)
                 st.session_state.authenticated = True
                 st.session_state.user_info = updated_user
-                st.success(f"Welcome back, {updated_user[2]}!")
+                st.success(f"Welcome back, {username}!")
                 st.markdown(
                     """<audio autoplay><source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg"></audio>""",
                     unsafe_allow_html=True,
                 )
                 autoplay_audio("assets/Welcome.wav")
                 st.rerun()
+                show_welcome_animation()
             else:
                 st.error("Invalid username or password")
                 st.markdown(
