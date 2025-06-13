@@ -664,7 +664,7 @@ def create_main_app():
     
     # Main app content
     st.title(f"🏠 HomeGPT: AI Family Companion")
-    st.caption(f"Welcome {full_name}! 💖")
+    st.caption(f"Welcome {username}! 💖")
     
     # Initialize quiz session state variables
     if "quiz_mode" not in st.session_state:
@@ -712,14 +712,14 @@ def create_main_app():
         content = st.text_area("Your memory or story")
         if st.button("Save Memory"):
             if title and content:
-                save_memory(title, content, full_name)
+                save_memory(title, content, username)
                 st.success("Memory saved!")
             else:
                 st.warning("Please fill in both title and content.")
 
         st.markdown("---")
         st.subheader("📚 Your Saved Memories")
-        memories = load_memories(full_name)
+        memories = load_memories(username)
         if memories:
             for mem in reversed(memories):
                 st.markdown(f"**{mem['timestamp']}**  \n*{mem['title']}*  \n{mem['content']}")
@@ -741,7 +741,7 @@ def create_main_app():
             password_to_save = st.text_input("Password", type="password")
             if st.button("Save Password"):
                 if site_name and password_to_save:
-                    success = save_password(site_name, password_to_save, full_name)
+                    success = save_password(site_name, password_to_save, username)
                     if success:
                         st.success("Password saved securely!")
                     else:
@@ -752,7 +752,7 @@ def create_main_app():
             site_to_retrieve = st.text_input("Website/App to retrieve")
             if st.button("Retrieve Password"):
                 if site_to_retrieve:
-                    password = retrieve_password(site_to_retrieve, full_name)
+                    password = retrieve_password(site_to_retrieve, username)
                     if password:
                         st.success(f"Password: {password}")
                     else:
