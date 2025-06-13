@@ -595,10 +595,7 @@ def create_login_page():
                     """<audio autoplay><source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg"></audio>""",
                     unsafe_allow_html=True,
                 )
-                autoplay_audio("assets/Welcome.wav")
-                lottie_home = load_lottie_url("https://assets9.lottiefiles.com/packages/lf20_puciaact.json")
-                if lottie_home:
-                    st_lottie(lottie_home, height=200, key="home_animation")
+                # autoplay_audio("assets/Welcome.wav")
                 st.rerun()
             else:
                 st.error("Invalid username or password")
