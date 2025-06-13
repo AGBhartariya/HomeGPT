@@ -541,6 +541,16 @@ def init_database():
             last_login TEXT
         )
     """)
+    try:
+        c.execute("ALTER TABLE users ADD COLUMN login_count INTEGER DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass
+
+    try:
+        c.execute("ALTER TABLE users ADD COLUMN last_login TEXT")
+    except sqlite3.OperationalError:
+        pass
+
     conn.commit()
     conn.close()
 
@@ -549,14 +559,17 @@ def register_user(username, password):
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
     try:
-        c.execute("INSERT INTO users VALUES (?, ?)",
-                  (username, hash_password(password)))
+        c.execute("""
+            INSERT INTO users (username, password, login_count, last_login)
+            VALUES (?, ?, 0, NULL)
+        """, (username, hash_password(password)))
         conn.commit()
         return True
     except sqlite3.IntegrityError:
         return False
     finally:
         conn.close()
+
 
 
 def create_login_page():
