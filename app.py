@@ -615,7 +615,7 @@ def create_login_page():
                 # 🎵 Play welcome sound using HTML5 <audio>
                 st.markdown(
                     """<audio autoplay>
-                        <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
+                        <source src="https://actions.google.com/sounds/v1/ambiences/magic_chime.ogg" type="audio/ogg">
                     </audio>""",
                     unsafe_allow_html=True,
                 )
