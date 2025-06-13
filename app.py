@@ -692,7 +692,7 @@ def create_main_app():
     
     # Sidebar with user info and logout
     with st.sidebar:
-        st.markdown(f"### {profile_emoji} Welcome, {username}!")
+        st.markdown(f"Welcome, {username}!")
         st.markdown(f"**Login Count:** {login_count}")
         if last_login:
             st.markdown(f"**Last Visit:** {last_login}")
