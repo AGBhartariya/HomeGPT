@@ -446,7 +446,7 @@ import hashlib
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-
+lottie_balloons = load_lottie_url("https://assets10.lottiefiles.com/packages/lf20_3zr20t7m.json")
 
 
 import sqlite3
@@ -596,6 +596,9 @@ def create_login_page():
                     unsafe_allow_html=True,
                 )
                 # autoplay_audio("assets/Welcome.wav")
+                if lottie_balloons:
+                    st_lottie(lottie_balloons, height=250, loop=False)
+                st.balloons()
                 st.rerun()
             else:
                 st.error("Invalid username or password")
