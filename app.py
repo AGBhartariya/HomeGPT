@@ -687,14 +687,13 @@ def create_main_app():
         st.session_state.show_result = False
     
     # Navigation tabs - All tabs from second code integrated
-    memory_tab, password_tab, chat_tab, music_tab, games_tab, love_tab, surprise_tab = st.tabs([
+    memory_tab, password_tab, chat_tab, music_tab, games_tab, love_tab = st.tabs([
         "📝 Memory Vault", 
         "🔐 Password Vault",
         "🧠 ChatGPT",
         "🎵 Music",
         "🎮 Games & Quiz",
-        "💌 Message",
-        "🎁 Surprise"
+        "💌 Message"
     ])
     
     def load_memories(username):
@@ -961,18 +960,6 @@ def create_main_app():
 
 
     
-    with surprise_tab:
-        st.header("🎁 Daily Surprise")
-
-        quote = get_daily_quote()
-        image_path = get_random_photo()
-
-        if image_path and os.path.exists(image_path):
-            st.image(image_path, caption="❤️ From Abhigyan", use_container_width=True)
-        else:
-            st.write("📸 No surprise photo available today")
-        
-        st.markdown(f"> _{quote}_")
 
 
 
