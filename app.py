@@ -635,7 +635,6 @@ def create_main_app():
         return  # Exit the function early
 
     username = user_info[0]
-    full_name = user_info[2]
     login_count = user_info[3]
     last_login = user_info[4]
     favorite_color = user_info[5]
@@ -650,7 +649,7 @@ def create_main_app():
     
     # Sidebar with user info and logout
     with st.sidebar:
-        st.markdown(f"### {profile_emoji} Welcome, {full_name}!")
+        st.markdown(f"### {profile_emoji} Welcome, {username}!")
         st.markdown(f"**Login Count:** {login_count}")
         if last_login:
             st.markdown(f"**Last Visit:** {last_login}")
