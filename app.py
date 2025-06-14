@@ -781,7 +781,7 @@ def create_main_app():
 
         st.markdown("---")
         st.subheader("📚 Your Saved Memories")
-        memories = load_memories(username)
+        memories = load_memories()
         if memories:
             for mem in reversed(memories):
                 st.markdown(f"**{mem['timestamp']}**  \n*{mem['title']}*  \n{mem['content']}")
