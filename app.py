@@ -747,10 +747,22 @@ def create_main_app():
         return st.session_state["memories"].get(username, [])
 
 
-    def save_memory(username, memory_data):
+    def save_memory(title, content, username):
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        new_entry = {
+            "title": title,
+            "content": content,
+            "timestamp": timestamp
+        }
+
+        if "memories" not in st.session_state:
+            st.session_state["memories"] = {}
+
         if username not in st.session_state["memories"]:
             st.session_state["memories"][username] = []
-        st.session_state["memories"][username].append(memory_data)
+
+        st.session_state["memories"][username].append(new_entry)
+
 
     # You can later replace this with actual database or file-saving logic
 
