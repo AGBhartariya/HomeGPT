@@ -629,7 +629,7 @@ def show_welcome_animation():
             st_lottie(lottie_home, height=200, key="home_animation")
 
         st.markdown('<h1 class="main-header">🏠 Welcome to HomeGPT! 🏠</h1>', unsafe_allow_html=True)
-        
+
         if 5 <= current_hour_ist < 12:
             greeting = "Good Morning! ☀️"
         elif 12 <= current_hour_ist < 17:
@@ -703,6 +703,21 @@ def update_login_details(username):
     updated_user = c.fetchone()
     conn.close()
     return updated_user
+
+# --- Ensure required state for debugging ---
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
+if 'user_info' not in st.session_state:
+    st.session_state['user_info'] = None
+if 'user_name' not in st.session_state:
+    st.session_state['user_name'] = None
+if 'loading_complete' not in st.session_state:
+    st.session_state['loading_complete'] = False
+
+# Debug info
+st.write("Auth:", st.session_state['authenticated'])
+st.write("User Info:", st.session_state['user_info'])
+
 
 
 def create_login_page():
