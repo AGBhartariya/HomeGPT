@@ -774,7 +774,7 @@ def create_main_app():
         content = st.text_area("Your memory or story")
         if st.button("Save Memory"):
             if title and content:
-                save_memory(title, content)
+                save_memory(title, content,username)
                 st.success("Memory saved!")
             else:
                 st.warning("Please fill in both title and content.")
