@@ -30,12 +30,7 @@ os.makedirs("sync_folder", exist_ok=True)
 os.makedirs("assets/photos", exist_ok=True)
 os.makedirs("faces", exist_ok=True)
 
-if 'authenticated' not in st.session_state:
-    st.session_state['authenticated'] = False
-if 'user_info' not in st.session_state:
-    st.session_state['user_info'] = None
-if 'user_name' not in st.session_state:
-    st.session_state['user_name'] = None
+
 
 st.set_page_config(
         page_title="HomeGPT - Welcome Home!",
@@ -931,7 +926,7 @@ def create_main_app():
 
     user_info = st.session_state.get('user_info')
 
-    if not user_info or len(user_info) < 3:
+    if not user_info or len(user_info) < 5:
         st.warning("⚠️ You are not logged in properly. Please log in again.")
         st.session_state['authenticated'] = False
         st.session_state['user_info'] = None
@@ -1291,14 +1286,14 @@ def main():
     
     
     # Initialize session state variables FIRST
-    # if 'authenticated' not in st.session_state:
-    #     st.session_state['authenticated'] = False
-    # if 'user_info' not in st.session_state:
-    #     st.session_state['user_info'] = None
-    # if 'user_name' not in st.session_state:
-    #     st.session_state['user_name'] = None
-    # if 'loading_complete' not in st.session_state:
-    #     st.session_state['loading_complete'] = False
+    if 'authenticated' not in st.session_state:
+        st.session_state['authenticated'] = False
+    if 'user_info' not in st.session_state:
+        st.session_state['user_info'] = None
+    if 'user_name' not in st.session_state:
+        st.session_state['user_name'] = None
+    if 'loading_complete' not in st.session_state:
+        st.session_state['loading_complete'] = False
     
     # Initialize database
     init_database()
