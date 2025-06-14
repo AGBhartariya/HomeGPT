@@ -811,52 +811,62 @@ def create_login_page():
 
     with tab1:
         st.subheader("🔐 Login")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
+        username = st.text_input("Username", key="login_username")
+        password = st.text_input("Password", type="password", key="login_password")
 
-        if st.button("🚀 Login"):
+        if st.button("🚀 Login", key="login_button"):
+            # Validate input
+            if not username or not password:
+                st.warning("Please enter both username and password.")
+                return
+
             user = login_user(username, password)
+            st.write("🔍 Login Attempt:", user)  # Debugging aid
+
             if user:
+                # Update login details
                 updated_user = update_login_details(username)
+
+                # Store session values
                 st.session_state.authenticated = True
                 st.session_state.user_info = updated_user
+                st.session_state.user_name = username
 
-                # Animations
-                st.success(f"Welcome back, {username}!")
-                st.markdown(
-                    """<audio autoplay>
+                # Animations and success
+                st.success(f"Welcome back, {username}! 🎉")
+                st.markdown("""
+                    <audio autoplay>
                         <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
-                    </audio>""",
-                    unsafe_allow_html=True,
-                )
+                    </audio>
+                """, unsafe_allow_html=True)
                 if lottie_balloons:
                     st_lottie(lottie_balloons, height=250, loop=False)
                 st.balloons()
 
                 time.sleep(2.5)
+                st.rerun()
             else:
-                st.error("Invalid username or password")
-                st.markdown(
-                    """<audio autoplay>
+                st.error("❌ Invalid username or password.")
+                st.markdown("""
+                    <audio autoplay>
                         <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
-                    </audio>""",
-                    unsafe_allow_html=True,
-                )
+                    </audio>
+                """, unsafe_allow_html=True)
 
     with tab2:
         st.subheader("🆕 Register")
-        username = st.text_input("Choose a Username", key="register_username")
-        password = st.text_input("Choose a Password", type="password", key="register_password")
-        if st.button("🎉 Register"):
-            if username and password:
-                success = register_user(username, password)
+        reg_username = st.text_input("Choose a Username", key="register_username")
+        reg_password = st.text_input("Choose a Password", type="password", key="register_password")
+        if st.button("🎉 Register", key="register_button"):
+            if reg_username and reg_password:
+                success = register_user(reg_username, reg_password)
                 if success:
-                    st.success("Registration successful! You can now login.")
+                    st.success("✅ Registration successful! You can now log in.")
                     st.balloons()
                 else:
-                    st.error("Username already exists.")
+                    st.error("⚠️ Username already exists.")
             else:
-                st.warning("Please fill out all required fields.")
+                st.warning("Please fill out both fields.")
 
 
 
@@ -1283,27 +1293,21 @@ def create_main_app():
 def main():
     """Main application function"""
     
-    for key, default in {
-        'authenticated': False,
-        'user_info': None,
-        'user_name': None,
-        'loading_complete': False,
-    }.items():
-        if key not in st.session_state:
-            st.session_state[key] = default
     
-    # # Initialize session state variables FIRST
-    # if 'authenticated' not in st.session_state:
-    #     st.session_state['authenticated'] = False
-    # if 'user_info' not in st.session_state:
-    #     st.session_state['user_info'] = None
-    # if 'user_name' not in st.session_state:
-    #     st.session_state['user_name'] = None
-    # if 'loading_complete' not in st.session_state:
-    #     st.session_state['loading_complete'] = False
+    # Initialize session state variables FIRST
+    if 'authenticated' not in st.session_state:
+        st.session_state['authenticated'] = False
+    if 'user_info' not in st.session_state:
+        st.session_state['user_info'] = None
+    if 'user_name' not in st.session_state:
+        st.session_state['user_name'] = None
+    if 'loading_complete' not in st.session_state:
+        st.session_state['loading_complete'] = False
     
     # Initialize database
     init_database()
+    st.write("Auth State:", st.session_state.authenticated)
+    st.write("User Info:", st.session_state.user_info)
     
     # ===== AUTHENTICATION GATE - STOPS EVERYTHING UNTIL LOGIN =====
     if not st.session_state.get('authenticated', False):
