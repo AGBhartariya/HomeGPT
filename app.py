@@ -1284,16 +1284,24 @@ def create_main_app():
 def main():
     """Main application function"""
     
+    for key, default in {
+        'authenticated': False,
+        'user_info': None,
+        'user_name': None,
+        'loading_complete': False,
+    }.items():
+        if key not in st.session_state:
+            st.session_state[key] = default
     
-    # Initialize session state variables FIRST
-    if 'authenticated' not in st.session_state:
-        st.session_state['authenticated'] = False
-    if 'user_info' not in st.session_state:
-        st.session_state['user_info'] = None
-    if 'user_name' not in st.session_state:
-        st.session_state['user_name'] = None
-    if 'loading_complete' not in st.session_state:
-        st.session_state['loading_complete'] = False
+    # # Initialize session state variables FIRST
+    # if 'authenticated' not in st.session_state:
+    #     st.session_state['authenticated'] = False
+    # if 'user_info' not in st.session_state:
+    #     st.session_state['user_info'] = None
+    # if 'user_name' not in st.session_state:
+    #     st.session_state['user_name'] = None
+    # if 'loading_complete' not in st.session_state:
+    #     st.session_state['loading_complete'] = False
     
     # Initialize database
     init_database()
