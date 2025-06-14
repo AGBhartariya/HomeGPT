@@ -744,10 +744,13 @@ def create_main_app():
         username = st.session_state.get("username")
         if not username:
             return []
-        return st.session_state["memories"].get(username, [])
+        return st.session_state.get("memories", {}).get(username, [])
 
+    def save_memory(title, content):
+        username = st.session_state.get("username")
+        if not username:
+            return  # Don't save if username is missing
 
-    def save_memory(title, content, username):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_entry = {
             "title": title,
@@ -764,8 +767,6 @@ def create_main_app():
         st.session_state["memories"][username].append(new_entry)
 
 
-    # You can later replace this with actual database or file-saving logic
-
 
 
     with memory_tab:
@@ -774,7 +775,7 @@ def create_main_app():
         content = st.text_area("Your memory or story")
         if st.button("Save Memory"):
             if title and content:
-                save_memory(title, content,username)
+                save_memory(title, content)
                 st.success("Memory saved!")
             else:
                 st.warning("Please fill in both title and content.")
