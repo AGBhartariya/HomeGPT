@@ -720,10 +720,101 @@ st.write("User Info:", st.session_state['user_info'])
 
 
 
-def create_login_page():
+# def create_login_page():
 
-    show_welcome_animation()
+#     show_welcome_animation()
     
+
+#     tab1, tab2 = st.tabs(["🔓 Login", "🆕 Register"])
+
+#     with tab1:
+#         st.subheader("🔐 Login")
+#         username = st.text_input("Username")
+#         password = st.text_input("Password", type="password")
+
+#         # if st.button("🚀 Login"):
+#         #     user = login_user(username, password)
+#         #     if user:
+#         #         updated_user = update_login_details(username)
+#         #         st.session_state.authenticated = True
+#         #         st.session_state.user_info = updated_user
+#         #         st.success(f"Welcome back, {username}!")
+#         #         st.markdown(
+#         #             """<audio autoplay><source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg"></audio>""",
+#         #             unsafe_allow_html=True,
+#         #         )
+#         #         # autoplay_audio("assets/Welcome.wav")
+#         #         if lottie_balloons:
+#         #             st_lottie(lottie_balloons, height=250, loop=False)
+#         #         st.balloons()
+#         #         st.rerun()
+#         if st.button("🚀 Login"):
+#             username = st.session_state.get("login_username", username)
+#             password = st.session_state.get("login_password", password)
+#             user = login_user(username, password)
+#             if user:
+#                 updated_user = update_login_details(username)
+#                 st.session_state.authenticated = True
+#                 st.session_state.user_info = updated_user
+
+#                 # Show welcome message and animations **before** rerun
+#                 st.success(f"Welcome back, {username}!")
+
+#                 # 🎵 Play welcome sound using HTML5 <audio>
+#                 st.markdown(
+#                     """<audio autoplay>
+#                         <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
+#                     </audio>""",
+#                     unsafe_allow_html=True,
+#                 )
+
+#                 # 🎈 Play balloon animation
+#                 if lottie_balloons:
+#                     st_lottie(lottie_balloons, height=250, loop=False)
+
+#                 # 🎉 Show confetti balloons
+#                 st.balloons()
+
+#                 # Give animations time to finish before rerunning
+#                 time.sleep(2.5)
+
+#                 # Rerun after delay
+#                 st.rerun()
+#             else:
+#                 st.error("Invalid username or password")
+#                 st.markdown(
+#                     """<audio autoplay>
+#                         <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+#                     </audio>""",
+#                     unsafe_allow_html=True,
+#                 )
+#         # autoplay_audio("assets/Forget.wav")
+
+#             # else:
+#             #     st.error("Invalid username or password")
+#             #     st.markdown(
+#             #         """<audio autoplay><source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg"></audio>""",
+#             #         unsafe_allow_html=True,
+#             #     )
+#             #     autoplay_audio("assets/Forget.wav")
+
+#     with tab2:
+#         st.subheader("🆕 Register")
+#         username = st.text_input("Choose a Username", key="register_username")
+#         password = st.text_input("Choose a Password", type="password", key="register_password")
+#         if st.button("🎉 Register"):
+#             if username and password:
+#                 success = register_user(username, password)
+#                 if success:
+#                     st.success("Registration successful! You can now login.")
+#                     st.balloons()
+#                 else:
+#                     st.error("Username already exists.")
+#             else:
+#                 st.warning("Please fill out all required fields.")
+
+def create_login_page():
+    show_welcome_animation()
 
     tab1, tab2 = st.tabs(["🔓 Login", "🆕 Register"])
 
@@ -732,53 +823,26 @@ def create_login_page():
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
 
-        # if st.button("🚀 Login"):
-        #     user = login_user(username, password)
-        #     if user:
-        #         updated_user = update_login_details(username)
-        #         st.session_state.authenticated = True
-        #         st.session_state.user_info = updated_user
-        #         st.success(f"Welcome back, {username}!")
-        #         st.markdown(
-        #             """<audio autoplay><source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg"></audio>""",
-        #             unsafe_allow_html=True,
-        #         )
-        #         # autoplay_audio("assets/Welcome.wav")
-        #         if lottie_balloons:
-        #             st_lottie(lottie_balloons, height=250, loop=False)
-        #         st.balloons()
-        #         st.rerun()
         if st.button("🚀 Login"):
-            username = st.session_state.get("login_username", username)
-            password = st.session_state.get("login_password", password)
             user = login_user(username, password)
             if user:
                 updated_user = update_login_details(username)
                 st.session_state.authenticated = True
                 st.session_state.user_info = updated_user
 
-                # Show welcome message and animations **before** rerun
+                # Animations
                 st.success(f"Welcome back, {username}!")
-
-                # 🎵 Play welcome sound using HTML5 <audio>
                 st.markdown(
                     """<audio autoplay>
                         <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
                     </audio>""",
                     unsafe_allow_html=True,
                 )
-
-                # 🎈 Play balloon animation
                 if lottie_balloons:
                     st_lottie(lottie_balloons, height=250, loop=False)
-
-                # 🎉 Show confetti balloons
                 st.balloons()
 
-                # Give animations time to finish before rerunning
                 time.sleep(2.5)
-
-                # Rerun after delay
                 st.rerun()
             else:
                 st.error("Invalid username or password")
@@ -788,15 +852,6 @@ def create_login_page():
                     </audio>""",
                     unsafe_allow_html=True,
                 )
-        # autoplay_audio("assets/Forget.wav")
-
-            # else:
-            #     st.error("Invalid username or password")
-            #     st.markdown(
-            #         """<audio autoplay><source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg"></audio>""",
-            #         unsafe_allow_html=True,
-            #     )
-            #     autoplay_audio("assets/Forget.wav")
 
     with tab2:
         st.subheader("🆕 Register")
