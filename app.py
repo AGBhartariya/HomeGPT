@@ -441,17 +441,158 @@ def play_sound_base64(sound_file):
 #     # Filter for current user
 #     return [m for m in memories if m["user"] == user]
 
-import hashlib
+# import hashlib
 
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
+# def hash_password(password):
+#     return hashlib.sha256(password.encode()).hexdigest()
 
-lottie_balloons = load_lottie_url("https://assets10.lottiefiles.com/packages/lf20_3zr20t7m.json")
+# lottie_balloons = load_lottie_url("https://assets10.lottiefiles.com/packages/lf20_3zr20t7m.json")
 
+
+# import sqlite3
+# import pytz
+
+# def show_welcome_animation():
+#     st.markdown("""
+#         <style>
+#             .main-header {
+#                 font-size: 36px;
+#                 font-weight: bold;
+#                 text-align: center;
+#                 color: #4CAF50;
+#                 margin-bottom: 0.5em;
+#             }
+#             .time-greeting {
+#                 font-size: 28px;
+#                 text-align: center;
+#                 color: #FF9800;
+#                 margin-top: 0.3em;
+#             }
+#             .welcome-message {
+#                 font-size: 20px;
+#                 text-align: center;
+#                 color: #2196F3;
+#                 margin-top: 0.5em;
+#             }
+#         </style>
+#     """, unsafe_allow_html=True)
+
+#     col1, col2, col3 = st.columns([1, 2, 1])
+
+#     with col2:
+#         # Get current IST time
+#         ist = pytz.timezone('Asia/Kolkata')
+#         ist_now = datetime.now(pytz.utc).astimezone(ist)
+#         current_hour_ist = ist_now.hour
+
+#         # Lottie animation
+#         lottie_home = load_lottie_url("https://assets9.lottiefiles.com/packages/lf20_puciaact.json")
+#         if lottie_home:
+#             st_lottie(lottie_home, height=200, key="home_animation")
+
+#         # Header and time-based greeting
+#         st.markdown('<h1 class="main-header">🏠 Welcome to HomeGPT! 🏠</h1>', unsafe_allow_html=True)
+#         if 5 <= current_hour_ist < 12:
+#             greeting = "Good Morning! ☀️"
+#         elif 12 <= current_hour_ist < 17:
+#             greeting = "Good Afternoon! 🌤️"
+#         elif 17 <= current_hour_ist < 21:
+#             greeting = "Good Evening! 🌅"
+#         else:
+#             greeting = "Good Night! 🌙"
+#         st.markdown(f'<div class="time-greeting">{greeting}</div>', unsafe_allow_html=True)
+#         st.markdown('<div class="welcome-message">Your personal AI assistant is ready to help! 💖</div>', unsafe_allow_html=True)
+
+
+# def login_user(username, password):
+#     conn = sqlite3.connect("users.db")
+#     c = conn.cursor()
+#     c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, hash_password(password)))
+#     user = c.fetchone()
+#     conn.close()
+#     return user
+
+
+# from datetime import datetime
+
+# def update_login_details(username):
+#     conn = sqlite3.connect("users.db")
+#     c = conn.cursor()
+#     c.execute("""
+#         UPDATE users
+#         SET login_count = login_count + 1,
+#             last_login = ?
+#         WHERE username = ?
+#     """, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), username))
+#     conn.commit()
+#     c.execute("SELECT * FROM users WHERE username=?", (username,))
+#     updated_user = c.fetchone()
+#     conn.close()
+#     return updated_user
+
+# def init_database():
+#     conn = sqlite3.connect("users.db")
+#     c = conn.cursor()
+#     c.execute("""
+#         CREATE TABLE IF NOT EXISTS users (
+#             username TEXT PRIMARY KEY,
+#             password TEXT NOT NULL,
+#             login_count INTEGER DEFAULT 0,
+#             last_login TEXT
+#         )
+#     """)
+#     try:
+#         c.execute("ALTER TABLE users ADD COLUMN login_count INTEGER DEFAULT 0")
+#     except sqlite3.OperationalError:
+#         pass
+
+#     try:
+#         c.execute("ALTER TABLE users ADD COLUMN last_login TEXT")
+#     except sqlite3.OperationalError:
+#         pass
+
+#     conn.commit()
+#     conn.close()
+
+
+# def register_user(username, password):
+#     conn = sqlite3.connect("users.db")
+#     c = conn.cursor()
+#     try:
+#         c.execute("""
+#             INSERT INTO users (username, password, login_count, last_login)
+#             VALUES (?, ?, 0, NULL)
+#         """, (username, hash_password(password)))
+#         conn.commit()
+#         return True
+#     except sqlite3.IntegrityError:
+#         return False
+#     finally:
+#         conn.close()
 
 import sqlite3
 import pytz
+from datetime import datetime
+import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
+import json
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
+def load_lottie_url(url: str):
+    try:
+        r = requests.get(url)
+        if r.status_code != 200:
+            return None
+        return r.json()
+    except:
+        return None
+
+# Load balloon animation (global)
+lottie_balloons = load_lottie_url("https://assets10.lottiefiles.com/packages/lf20_3zr20t7m.json")
+
+# --- Show Welcome Animation ---
 def show_welcome_animation():
     st.markdown("""
         <style>
@@ -478,20 +619,17 @@ def show_welcome_animation():
     """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([1, 2, 1])
-
     with col2:
-        # Get current IST time
         ist = pytz.timezone('Asia/Kolkata')
         ist_now = datetime.now(pytz.utc).astimezone(ist)
         current_hour_ist = ist_now.hour
 
-        # Lottie animation
         lottie_home = load_lottie_url("https://assets9.lottiefiles.com/packages/lf20_puciaact.json")
         if lottie_home:
             st_lottie(lottie_home, height=200, key="home_animation")
 
-        # Header and time-based greeting
         st.markdown('<h1 class="main-header">🏠 Welcome to HomeGPT! 🏠</h1>', unsafe_allow_html=True)
+        
         if 5 <= current_hour_ist < 12:
             greeting = "Good Morning! ☀️"
         elif 12 <= current_hour_ist < 17:
@@ -500,36 +638,11 @@ def show_welcome_animation():
             greeting = "Good Evening! 🌅"
         else:
             greeting = "Good Night! 🌙"
+
         st.markdown(f'<div class="time-greeting">{greeting}</div>', unsafe_allow_html=True)
         st.markdown('<div class="welcome-message">Your personal AI assistant is ready to help! 💖</div>', unsafe_allow_html=True)
 
-
-def login_user(username, password):
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
-    c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, hash_password(password)))
-    user = c.fetchone()
-    conn.close()
-    return user
-
-
-from datetime import datetime
-
-def update_login_details(username):
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
-    c.execute("""
-        UPDATE users
-        SET login_count = login_count + 1,
-            last_login = ?
-        WHERE username = ?
-    """, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), username))
-    conn.commit()
-    c.execute("SELECT * FROM users WHERE username=?", (username,))
-    updated_user = c.fetchone()
-    conn.close()
-    return updated_user
-
+# --- Database Logic ---
 def init_database():
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
@@ -545,15 +658,12 @@ def init_database():
         c.execute("ALTER TABLE users ADD COLUMN login_count INTEGER DEFAULT 0")
     except sqlite3.OperationalError:
         pass
-
     try:
         c.execute("ALTER TABLE users ADD COLUMN last_login TEXT")
     except sqlite3.OperationalError:
         pass
-
     conn.commit()
     conn.close()
-
 
 def register_user(username, password):
     conn = sqlite3.connect("users.db")
@@ -570,6 +680,29 @@ def register_user(username, password):
     finally:
         conn.close()
 
+def login_user(username, password):
+    conn = sqlite3.connect("users.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, hash_password(password)))
+    user = c.fetchone()
+    conn.close()
+    return user
+
+def update_login_details(username):
+    conn = sqlite3.connect("users.db")
+    c = conn.cursor()
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    c.execute("""
+        UPDATE users
+        SET login_count = login_count + 1,
+            last_login = ?
+        WHERE username = ?
+    """, (now, username))
+    conn.commit()
+    c.execute("SELECT * FROM users WHERE username=?", (username,))
+    updated_user = c.fetchone()
+    conn.close()
+    return updated_user
 
 
 def create_login_page():
@@ -668,65 +801,110 @@ def create_login_page():
 
 
 
+# def create_main_app():
+#     """Create the main application after login"""
+    
+#     user_info = st.session_state.user_info
+
+#     if not user_info:
+#         st.warning("⚠️ You are not logged in. Please log in to continue.")
+#         st.session_state['authenticated'] = False
+#         st.rerun()
+#         return  # Exit the function early
+
+#     username = user_info[0]
+#     login_count = user_info[3]
+#     last_login = user_info[4]
+#     # Page config for main app
+#     # st.set_page_config(
+#     #     page_title="HomeGPT: AI Companion for Family",
+#     #     layout="wide",
+#     #     page_icon="🏠"
+#     # )
+    
+#     # Sidebar with user info and logout
+#     with st.sidebar:
+#         st.markdown(f"Welcome, {username}!")
+#         st.markdown(f"**Login Count:** {login_count}")
+#         if last_login:
+#             st.markdown(f"**Last Visit:** {last_login}")
+        
+#         st.markdown("---")
+        
+#         if st.button("🚪 Logout", use_container_width=True):
+#             st.session_state.authenticated = False
+#             st.session_state.user_info = None
+#             st.session_state.user_name = None
+#             st.rerun()
+    
+#     # Main app content
+#     st.title(f"🏠 HomeGPT: AI Family Companion")
+#     st.caption(f"Welcome {username}! 💖")
+    
+#     # Initialize quiz session state variables
+#     if "quiz_mode" not in st.session_state:
+#         st.session_state.quiz_mode = "Mixed"
+#     if "question_index" not in st.session_state:
+#         st.session_state.question_index = 0
+#     if "score" not in st.session_state:
+#         st.session_state.score = 0
+#     if "leaderboard" not in st.session_state:
+#         st.session_state.leaderboard = []
+#     if "questions_pool" not in st.session_state:
+#         st.session_state.questions_pool = []
+#     if "current_options" not in st.session_state:
+#         st.session_state.current_options = []
+#     if "correct_answer" not in st.session_state:
+#         st.session_state.correct_answer = ""
+#     if "selected_option" not in st.session_state:
+#         st.session_state.selected_option = None
+#     if "show_result" not in st.session_state:
+#         st.session_state.show_result = False
 def create_main_app():
     """Create the main application after login"""
-    
-    user_info = st.session_state.user_info
 
-    if not user_info:
-        st.warning("⚠️ You are not logged in. Please log in to continue.")
+    user_info = st.session_state.get('user_info')
+
+    if not user_info or len(user_info) < 5:
+        st.warning("⚠️ You are not logged in properly. Please log in again.")
         st.session_state['authenticated'] = False
+        st.session_state['user_info'] = None
         st.rerun()
         return  # Exit the function early
 
-    username = user_info[0]
-    login_count = user_info[3]
-    last_login = user_info[4]
-    # Page config for main app
-    # st.set_page_config(
-    #     page_title="HomeGPT: AI Companion for Family",
-    #     layout="wide",
-    #     page_icon="🏠"
-    # )
-    
-    # Sidebar with user info and logout
+    # Extract user fields safely
+    username = user_info[0] if len(user_info) > 0 else "Unknown"
+    login_count = user_info[3] if len(user_info) > 3 else 0
+    last_login = user_info[4] if len(user_info) > 4 else "N/A"
+
+    # Sidebar: Profile & Logout
     with st.sidebar:
-        st.markdown(f"Welcome, {username}!")
-        st.markdown(f"**Login Count:** {login_count}")
-        if last_login:
-            st.markdown(f"**Last Visit:** {last_login}")
-        
+        st.markdown(f"👤 **User:** {username}")
+        st.markdown(f"🔁 **Login Count:** {login_count}")
+        st.markdown(f"⏱️ **Last Visit:** {last_login}")
         st.markdown("---")
-        
+
         if st.button("🚪 Logout", use_container_width=True):
-            st.session_state.authenticated = False
-            st.session_state.user_info = None
-            st.session_state.user_name = None
+            st.session_state['authenticated'] = False
+            st.session_state['user_info'] = None
+            st.session_state['user_name'] = None
             st.rerun()
-    
-    # Main app content
-    st.title(f"🏠 HomeGPT: AI Family Companion")
-    st.caption(f"Welcome {username}! 💖")
-    
-    # Initialize quiz session state variables
-    if "quiz_mode" not in st.session_state:
-        st.session_state.quiz_mode = "Mixed"
-    if "question_index" not in st.session_state:
-        st.session_state.question_index = 0
-    if "score" not in st.session_state:
-        st.session_state.score = 0
-    if "leaderboard" not in st.session_state:
-        st.session_state.leaderboard = []
-    if "questions_pool" not in st.session_state:
-        st.session_state.questions_pool = []
-    if "current_options" not in st.session_state:
-        st.session_state.current_options = []
-    if "correct_answer" not in st.session_state:
-        st.session_state.correct_answer = ""
-    if "selected_option" not in st.session_state:
-        st.session_state.selected_option = None
-    if "show_result" not in st.session_state:
-        st.session_state.show_result = False
+
+    # Main area
+    st.title("🏠 HomeGPT: AI Family Companion")
+    st.caption(f"Welcome, {username}! 💖")
+
+    # Quiz-related session state variables (idempotent init)
+    st.session_state.setdefault("quiz_mode", "Mixed")
+    st.session_state.setdefault("question_index", 0)
+    st.session_state.setdefault("score", 0)
+    st.session_state.setdefault("leaderboard", [])
+    st.session_state.setdefault("questions_pool", [])
+    st.session_state.setdefault("current_options", [])
+    st.session_state.setdefault("correct_answer", "")
+    st.session_state.setdefault("selected_option", None)
+    st.session_state.setdefault("show_result", False)
+
     
     # Navigation tabs - All tabs from second code integrated
     memory_tab, password_tab, chat_tab, music_tab, games_tab, love_tab = st.tabs([
@@ -1006,6 +1184,43 @@ def create_main_app():
 
 
 
+# def main():
+#     """Main application function"""
+    
+    
+#     # Initialize session state variables FIRST
+#     if 'authenticated' not in st.session_state:
+#         st.session_state['authenticated'] = False
+#     if 'user_info' not in st.session_state:
+#         st.session_state['user_info'] = None
+#     if 'user_name' not in st.session_state:
+#         st.session_state['user_name'] = None
+#     if 'loading_complete' not in st.session_state:
+#         st.session_state['loading_complete'] = False
+    
+#     # Initialize database
+#     init_database()
+    
+#     # ===== AUTHENTICATION GATE - STOPS EVERYTHING UNTIL LOGIN =====
+#     if not st.session_state.get('authenticated', False):
+        
+#         # Optional: Show catchy loader on first visit
+#         if not st.session_state['loading_complete']:
+#             with st.spinner('✨ Setting up your HomeGPT experience...'):
+#                 time.sleep(2)  # Simulate loading time
+#             st.session_state['loading_complete'] = True
+#             st.rerun()
+        
+#         # Show only the authentication page
+#         create_login_page()
+#         st.stop()  # ⭐ THIS PREVENTS ANYTHING ELSE FROM LOADING
+    
+#     # ===== ONLY RUNS AFTER SUCCESSFUL AUTHENTICATION =====
+#     create_main_app()
+
+# if __name__ == "__main__":
+#     main()
+
 def main():
     """Main application function"""
     
@@ -1042,6 +1257,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
