@@ -874,8 +874,8 @@ def create_main_app():
 
     # Extract user fields safely
     username = user_info[0] if len(user_info) > 0 else "Unknown"
-    login_count = user_info[3] if len(user_info) > 3 else 0
-    last_login = user_info[4] if len(user_info) > 4 else "N/A"
+    login_count = user_info[2] if len(user_info) > 3 else 0
+    last_login = user_info[3] if len(user_info) > 4 else "N/A"
 
     # Sidebar: Profile & Logout
     with st.sidebar:
