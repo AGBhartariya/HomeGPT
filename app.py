@@ -30,6 +30,13 @@ os.makedirs("sync_folder", exist_ok=True)
 os.makedirs("assets/photos", exist_ok=True)
 os.makedirs("faces", exist_ok=True)
 
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
+if 'user_info' not in st.session_state:
+    st.session_state['user_info'] = None
+if 'user_name' not in st.session_state:
+    st.session_state['user_name'] = None
+
 st.set_page_config(
         page_title="HomeGPT - Welcome Home!",
         page_icon="🏠",
@@ -707,6 +714,8 @@ def update_login_details(username):
 
 
 
+
+
 # def create_login_page():
 
 #     show_welcome_animation()
@@ -922,7 +931,7 @@ def create_main_app():
 
     user_info = st.session_state.get('user_info')
 
-    if not user_info or len(user_info) < 5:
+    if not user_info or len(user_info) < 3:
         st.warning("⚠️ You are not logged in properly. Please log in again.")
         st.session_state['authenticated'] = False
         st.session_state['user_info'] = None
@@ -930,10 +939,9 @@ def create_main_app():
         return  # Exit the function early
 
     # Extract user fields safely
-    username = user_info[0] if len(user_info) > 0 else "Unknown"
-    login_count = user_info[2] if len(user_info) > 3 else 0
-    last_login = user_info[3] if len(user_info) > 4 else "N/A"
-
+    username = user_info[0] 
+    login_count = user_info[2] 
+    last_login = user_info[3] 
     # Sidebar: Profile & Logout
     with st.sidebar:
         st.markdown(f"👤 **User:** {username}")
@@ -1283,14 +1291,14 @@ def main():
     
     
     # Initialize session state variables FIRST
-    if 'authenticated' not in st.session_state:
-        st.session_state['authenticated'] = False
-    if 'user_info' not in st.session_state:
-        st.session_state['user_info'] = None
-    if 'user_name' not in st.session_state:
-        st.session_state['user_name'] = None
-    if 'loading_complete' not in st.session_state:
-        st.session_state['loading_complete'] = False
+    # if 'authenticated' not in st.session_state:
+    #     st.session_state['authenticated'] = False
+    # if 'user_info' not in st.session_state:
+    #     st.session_state['user_info'] = None
+    # if 'user_name' not in st.session_state:
+    #     st.session_state['user_name'] = None
+    # if 'loading_complete' not in st.session_state:
+    #     st.session_state['loading_complete'] = False
     
     # Initialize database
     init_database()
