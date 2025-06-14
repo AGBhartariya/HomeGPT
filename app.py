@@ -704,19 +704,6 @@ def update_login_details(username):
     conn.close()
     return updated_user
 
-# --- Ensure required state for debugging ---
-if 'authenticated' not in st.session_state:
-    st.session_state['authenticated'] = False
-if 'user_info' not in st.session_state:
-    st.session_state['user_info'] = None
-if 'user_name' not in st.session_state:
-    st.session_state['user_name'] = None
-if 'loading_complete' not in st.session_state:
-    st.session_state['loading_complete'] = False
-
-# Debug info
-st.write("Auth:", st.session_state['authenticated'])
-st.write("User Info:", st.session_state['user_info'])
 
 
 
