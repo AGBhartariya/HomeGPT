@@ -740,8 +740,12 @@ def create_main_app():
         "💌 Message"
     ])
     
-    def load_memories(username):
+    def load_memories():
+        username = st.session_state.get("username")
+        if not username:
+            return []
         return st.session_state["memories"].get(username, [])
+
 
     def save_memory(username, memory_data):
         if username not in st.session_state["memories"]:
