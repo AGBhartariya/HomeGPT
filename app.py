@@ -680,8 +680,8 @@ def create_main_app():
         return  # Exit the function early
 
     username = user_info[0]
-    login_count = user_info[3]
-    last_login = user_info[4]
+    login_count = user_info[2]
+    last_login = user_info[3]
     # Page config for main app
     # st.set_page_config(
     #     page_title="HomeGPT: AI Companion for Family",
