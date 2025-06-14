@@ -834,7 +834,6 @@ def create_login_page():
                 st.balloons()
 
                 time.sleep(2.5)
-                st.rerun()
             else:
                 st.error("Invalid username or password")
                 st.markdown(
