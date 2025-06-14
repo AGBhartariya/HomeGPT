@@ -666,6 +666,8 @@ def create_login_page():
                 st.warning("Please fill out all required fields.")
 
 
+if "memories" not in st.session_state:
+    st.session_state["memories"] = {}
 
 
 def create_main_app():
@@ -739,10 +741,13 @@ def create_main_app():
     ])
     
     def load_memories(username):
-        print(f"[Placeholder] Loading all memories for {username}")
-        return []  # Return empty list for now
+        return st.session_state["memories"].get(username, [])
+
     def save_memory(username, memory_data):
-        print(f"[Placeholder] Saving memory for {username}: {memory_data}")
+        if username not in st.session_state["memories"]:
+            st.session_state["memories"][username] = []
+        st.session_state["memories"][username].append(memory_data)
+
     # You can later replace this with actual database or file-saving logic
 
 
