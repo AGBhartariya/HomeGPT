@@ -575,7 +575,8 @@ def register_user(username, password):
 def create_login_page():
 
     show_welcome_animation()
-    
+    username = st.session_state.get("login_username", username)
+
 
     tab1, tab2 = st.tabs(["🔓 Login", "🆕 Register"])
 
