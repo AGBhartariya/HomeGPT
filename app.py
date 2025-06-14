@@ -383,16 +383,11 @@ def create_main_app():
         
         st.markdown("---")
         
-        # if st.button("🚪 Logout", use_container_width=True):
-        #     st.session_state.authenticated = False
-        #     st.session_state.user_info = None
-        #     st.session_state.user_name = None
-        #     st.rerun()
         if st.button("🚪 Logout", use_container_width=True):
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
+            st.session_state.authenticated = False
+            st.session_state.user_info = None
+            st.session_state.user_name = None
             st.rerun()
-
     
     # Main app content
     st.title(f"🏠 HomeGPT: AI Family Companion")
