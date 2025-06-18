@@ -54,17 +54,6 @@ Welcome to **HomeGPT** – a beautifully crafted, multi-feature personal assista
 
 ---
 
-## 📸 Screenshots & Demo
-
-Add visuals of:
-
-* Login page with Lottie animation
-* Welcome greeting with time-based emoji
-* Music and Chat tabs
-* Vaults and Telegram interface
-
-*(TIP: Use GIFs or Loom videos for best engagement)*
-
 ---
 
 ## ✨ How to Run Locally
