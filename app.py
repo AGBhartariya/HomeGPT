@@ -740,14 +740,13 @@ def create_main_app():
         "💌 Message"
     ])
     
-    def load_memories():
-        username = st.session_state.get("username")
-        if not username:
-            return []
-        return st.session_state["memories"].get(username, [])
 
+    def save_memory(title, content):
+        if "user_info" in st.session_state and st.session_state["user_info"]:
+            username = st.session_state["user_info"][0]
+        else:
+            return
 
-    def save_memory(title, content, username):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_entry = {
             "title": title,
@@ -764,6 +763,19 @@ def create_main_app():
         st.session_state["memories"][username].append(new_entry)
 
 
+    def load_memories():
+    # Use correct source of username
+        if "user_info" in st.session_state and st.session_state["user_info"]:
+            username = st.session_state["user_info"][0]  # Assuming username is at index 0
+        else:
+            return []
+        
+        if "memories" not in st.session_state:
+            return []
+
+        return st.session_state["memories"].get(username, [])
+
+
     # You can later replace this with actual database or file-saving logic
 
 
@@ -774,7 +786,7 @@ def create_main_app():
         content = st.text_area("Your memory or story")
         if st.button("Save Memory"):
             if title and content:
-                save_memory(title, content,username)
+                save_memory(title, content)
                 st.success("Memory saved!")
             else:
                 st.warning("Please fill in both title and content.")
@@ -829,18 +841,18 @@ def create_main_app():
             response = ask_homegpt(user_query)
             st.success(response)
     
-    with music_tab:
-        st.header("🎵 YouTube Music Player")
-        song_query = st.text_input("Enter song name or artist:", key="music_search")
-        api_key = st.secrets["YOUTUBE_API_KEY"]
+    # with music_tab:
+    #     st.header("🎵 YouTube Music Player")
+    #     song_query = st.text_input("Enter song name or artist:", key="music_search")
+    #     api_key = st.secrets["YOUTUBE_API_KEY"]
 
-        if st.button("Search & Play", key="music_play_btn") and song_query:
-            video_id, title = search_youtube(song_query, api_key)
-            if video_id:
-                st.success(f"Playing: {title}")
-                st.video(f"https://www.youtube.com/watch?v={video_id}")
-            else:
-                st.error("No results found.")
+    #     if st.button("Search & Play", key="music_play_btn") and song_query:
+    #         video_id, title = search_youtube(song_query, api_key)
+    #         if video_id:
+    #             st.success(f"Playing: {title}")
+    #             st.video(f"https://www.youtube.com/watch?v={video_id}")
+    #         else:
+    #             st.error("No results found.")
 
     
 
