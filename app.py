@@ -740,6 +740,9 @@ def create_main_app():
         "💌 Message"
     ])
     
+    from pathlib import Path
+    DB_PATH = Path("memories.db")
+
     def init_memory_db():
         conn = sqlite3.connect("memories.db")
         c = conn.cursor()
@@ -842,18 +845,18 @@ def create_main_app():
             response = ask_homegpt(user_query)
             st.success(response)
     
-    # with music_tab:
-    #     st.header("🎵 YouTube Music Player")
-    #     song_query = st.text_input("Enter song name or artist:", key="music_search")
-    #     api_key = st.secrets["YOUTUBE_API_KEY"]
+    with music_tab:
+        st.header("🎵 YouTube Music Player")
+        song_query = st.text_input("Enter song name or artist:", key="music_search")
+        api_key = st.secrets["YOUTUBE_API_KEY"]
 
-    #     if st.button("Search & Play", key="music_play_btn") and song_query:
-    #         video_id, title = search_youtube(song_query, api_key)
-    #         if video_id:
-    #             st.success(f"Playing: {title}")
-    #             st.video(f"https://www.youtube.com/watch?v={video_id}")
-    #         else:
-    #             st.error("No results found.")
+        if st.button("Search & Play", key="music_play_btn") and song_query:
+            video_id, title = search_youtube(song_query, api_key)
+            if video_id:
+                st.success(f"Playing: {title}")
+                st.video(f"https://www.youtube.com/watch?v={video_id}")
+            else:
+                st.error("No results found.")
 
     
 
