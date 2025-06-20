@@ -740,40 +740,40 @@ def create_main_app():
         "💌 Message"
     ])
     
+    def init_memory_db():
+        conn = sqlite3.connect("memories.db")
+        c = conn.cursor()
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS memories (
+                username TEXT,
+                title TEXT,
+                content TEXT,
+                timestamp TEXT
+            )
+        """)
+        conn.commit()
+        conn.close()
 
-    def save_memory(title, content):
-        if "user_info" in st.session_state and st.session_state["user_info"]:
-            username = st.session_state["user_info"][0]
-        else:
-            return
 
+    def save_memory(title, content, username):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        new_entry = {
-            "title": title,
-            "content": content,
-            "timestamp": timestamp
-        }
-
-        if "memories" not in st.session_state:
-            st.session_state["memories"] = {}
-
-        if username not in st.session_state["memories"]:
-            st.session_state["memories"][username] = []
-
-        st.session_state["memories"][username].append(new_entry)
+        conn = sqlite3.connect("memories.db")
+        c = conn.cursor()
+        c.execute("INSERT INTO memories (username, title, content, timestamp) VALUES (?, ?, ?, ?)",
+                (username, title, content, timestamp))
+        conn.commit()
+        conn.close()
 
 
-    def load_memories():
-    # Use correct source of username
-        if "user_info" in st.session_state and st.session_state["user_info"]:
-            username = st.session_state["user_info"][0]  # Assuming username is at index 0
-        else:
-            return []
-        
-        if "memories" not in st.session_state:
-            return []
 
-        return st.session_state["memories"].get(username, [])
+    def load_memories(username):
+        conn = sqlite3.connect("memories.db")
+        c = conn.cursor()
+        c.execute("SELECT title, content, timestamp FROM memories WHERE username=?", (username,))
+        rows = c.fetchall()
+        conn.close()
+        return [{"title": row[0], "content": row[1], "timestamp": row[2]} for row in rows]
+
 
 
     # You can later replace this with actual database or file-saving logic
@@ -786,14 +786,15 @@ def create_main_app():
         content = st.text_area("Your memory or story")
         if st.button("Save Memory"):
             if title and content:
-                save_memory(title, content)
+                save_memory(title, content, username)
                 st.success("Memory saved!")
             else:
                 st.warning("Please fill in both title and content.")
+        init_memory_db()
 
         st.markdown("---")
         st.subheader("📚 Your Saved Memories")
-        memories = load_memories()
+        memories = load_memories(username)
         if memories:
             for mem in reversed(memories):
                 st.markdown(f"**{mem['timestamp']}**  \n*{mem['title']}*  \n{mem['content']}")
