@@ -709,6 +709,133 @@ def create_main_app():
     # Main app content
     st.title(f"🏠 HomeGPT: AI Family Companion")
     st.caption(f"Welcome {username}! 💖")
+    # from transformers import pipeline
+    # import random
+
+    # # Load emotion detection model (initialize only once globally)
+    # emotion_classifier = pipeline("text-classification", model="j-hartmann/emotion-english-distilroberta-base")
+
+    # # Quotes based on mood
+    # motivational_quotes = {
+    #     "joy": [
+    #         "Keep smiling — life is beautiful!",
+    #         "Joy is the simplest form of gratitude.",
+    #         "Happiness looks good on you. Keep glowing!"
+    #     ],
+    #     "sadness": [
+    #         "Every storm runs out of rain. You’re stronger than you think.",
+    #         "Tough times never last, but tough people do.",
+    #         "It’s okay to feel down. Brighter days are coming. 🌤️"
+    #     ],
+    #     "anger": [
+    #         "Breathe. You’re in control, not the emotion.",
+    #         "Sometimes the best response is silence and calm.",
+    #         "Channel that energy into something powerful."
+    #     ],
+    #     "love": [
+    #         "You are loved. Deeply, truly, endlessly.",
+    #         "The heart that gives love is never empty.",
+    #         "Love grows when shared. Spread it. 🌸"
+    #     ],
+    #     "fear": [
+    #         "Feel the fear and do it anyway.",
+    #         "Courage doesn’t mean you don’t feel afraid — it means you act despite it.",
+    #         "Your anxiety doesn’t define your capability."
+    #     ],
+    #     "neutral": [
+    #         "Today is a blank page — make it beautiful.",
+    #         "You’re alive. That’s your superpower today.",
+    #         "Make space for peace. Everything else will follow."
+    #     ]
+    # }
+
+    # def detect_mood_from_text(text):
+    #     result = emotion_classifier(text)
+    #     return result[0]['label'] if result else "neutral"
+
+    # def get_music_recommendation(mood):
+    #     mood_to_music = {
+    #         "joy": "🎵 Try something upbeat: Happy - Pharrell Williams",
+    #         "sadness": "🎶 Try something comforting: Fix You - Coldplay",
+    #         "anger": "🎧 Try something mellow: Weightless - Marconi Union",
+    #         "fear": "🧘‍♂️ Try something soothing: River Flows in You - Yiruma",
+    #         "love": "❤️ Try something warm: Perfect - Ed Sheeran"
+    #     }
+    #     return mood_to_music.get(mood.lower(), "🎵 Explore something new!")
+
+    # def get_quote(mood):
+    #     mood = mood.lower()
+    #     return random.choice(motivational_quotes.get(mood, motivational_quotes["neutral"]))
+
+    # # --- On Welcome Page ---
+
+    # st.markdown("## 🧠 How are you feeling today?")
+    # mood_input = st.text_area("Describe your current mood or thoughts:", key="mood_input")
+
+    # if st.button("🔍 Analyze Mood"):
+    #     if mood_input.strip():
+    #         detected_mood = detect_mood_from_text(mood_input)
+    #         st.session_state["last_mood"] = detected_mood
+
+    #         st.success(f"Detected Mood: **{detected_mood}**")
+    #         st.info(get_music_recommendation(detected_mood))
+    #         st.markdown(f"💬 *Motivational Thought:* **{get_quote(detected_mood)}**")
+
+    #         # Mood-reactive background
+    #         if detected_mood.lower() in ["sadness", "fear"]:
+    #             st.markdown("<style>body {background-color: #e0f7fa;}</style>", unsafe_allow_html=True)
+    #         elif detected_mood.lower() == "joy":
+    #             st.balloons()
+    #         elif detected_mood.lower() == "love":
+    #             st.markdown("💖 You are loved. Always.")
+    #     else:
+    #         st.warning("Please write something about how you're feeling.")
+
+    # import requests
+
+
+    # if "mood_detected" not in st.session_state:
+    #     st.session_state["mood_detected"] = False
+
+    # from transformers import pipeline
+
+    # emotion_classifier = pipeline("text-classification", model="j-hartmann/emotion-english-distilroberta-base")
+
+    # def detect_mood_from_text(text):
+    #     result = emotion_classifier(text)
+    #     return result[0]['label'] if result else "neutral"
+
+
+    # if not st.session_state["mood_detected"]:
+    #     st.markdown("<h2 style='text-align:center;'>🎭 How are you feeling today?</h2>", unsafe_allow_html=True)
+    #     mood_input = st.text_input("Describe your current mood in a few words", placeholder="I'm feeling a bit tired but hopeful...")
+
+    #     if st.button("🔍 Analyze My Mood"):
+    #         if mood_input.strip():
+    #             detected_mood = detect_mood_from_text(mood_input)
+    #             st.session_state["mood"] = detected_mood
+    #             st.session_state["mood_detected"] = True
+    #             st.rerun()
+    #         else:
+    #             st.warning("Please enter something about how you feel.")
+    #     st.stop()  # 👈 stops rendering rest of the app until mood is given
+
+    # if st.session_state["mood_detected"]:
+    #     mood = st.session_state.get("mood", "neutral")
+
+
+    #     mood_messages = {
+    #         "joy": "You're feeling happy! Let's keep the good vibes going 💛",
+    #         "anger": "You're feeling a bit heated. Let's cool down together 🧊",
+    #         "sadness": "It's okay to feel down. I'm here with you 💙",
+    #         "neutral": "You're feeling neutral. Let's make today better 🤍"
+    #     }
+
+    #     st.subheader(mood_messages.get(mood, "Your emotional vibe is unique 💫"))
+
+
+
+
     
     # Initialize quiz session state variables
     if "quiz_mode" not in st.session_state:
@@ -756,6 +883,8 @@ def create_main_app():
         """)
         conn.commit()
         conn.close()
+
+    
 
 
     def save_memory(title, content, username):
@@ -845,18 +974,18 @@ def create_main_app():
             response = ask_homegpt(user_query)
             st.success(response)
     
-    with music_tab:
-        st.header("🎵 YouTube Music Player")
-        song_query = st.text_input("Enter song name or artist:", key="music_search")
-        api_key = st.secrets["YOUTUBE_API_KEY"]
+    # with music_tab:
+    #     st.header("🎵 YouTube Music Player")
+    #     song_query = st.text_input("Enter song name or artist:", key="music_search")
+    #     api_key = st.secrets["YOUTUBE_API_KEY"]
 
-        if st.button("Search & Play", key="music_play_btn") and song_query:
-            video_id, title = search_youtube(song_query, api_key)
-            if video_id:
-                st.success(f"Playing: {title}")
-                st.video(f"https://www.youtube.com/watch?v={video_id}")
-            else:
-                st.error("No results found.")
+    #     if st.button("Search & Play", key="music_play_btn") and song_query:
+    #         video_id, title = search_youtube(song_query, api_key)
+    #         if video_id:
+    #             st.success(f"Playing: {title}")
+    #             st.video(f"https://www.youtube.com/watch?v={video_id}")
+    #         else:
+    #             st.error("No results found.")
 
     
 
@@ -1009,19 +1138,48 @@ def create_main_app():
 
 
 
+    # with love_tab:
+    #     st.header("💌 Send a Message to Abhigyan via Telegram")
+
+    #     # Get sender's name from session state or fallback
+    #     sender_name = st.text_input("Your Name", placeholder="Enter your name")
+
+    #     # Display previous messages in session (optional)
+    #     if "love_messages" not in st.session_state:
+    #         st.session_state.love_messages = []
+
+    #     for msg in st.session_state.love_messages:
+    #         with st.chat_message("user"):
+    #             st.markdown(msg["content"])
+
+    #     # Chat input for new message
+    #     user_message = st.chat_input("Type your message here and press Enter to send to Abhigyan")
+
+    #     if user_message:
+    #         if not sender_name.strip():
+    #             st.warning("Please enter your name before sending a message.")
+    #         else:
+    #             sent = send_telegram_message(user_message, sender_name)
+    #         if sent:
+    #             st.success("✅ Your message was sent to Abhigyan on Telegram!")
+    #             st.session_state.love_messages.append({"role": "user", "content": user_message})
+    #         else:
+    #             st.error("❌ Failed to send message. Please try again later.")
+
     with love_tab:
         st.header("💌 Send a Message to Abhigyan via Telegram")
 
-        # Get sender's name from session state or fallback
+        # Sender's name input
         sender_name = st.text_input("Your Name", placeholder="Enter your name")
 
-        # Display previous messages in session (optional)
+        # Maintain session state for chat history
         if "love_messages" not in st.session_state:
             st.session_state.love_messages = []
 
+        # Show previous messages
         for msg in st.session_state.love_messages:
             with st.chat_message("user"):
-                st.markdown(msg["content"])
+                st.markdown(f"**{msg['sender']}**: {msg['content']}")
 
         # Chat input for new message
         user_message = st.chat_input("Type your message here and press Enter to send to Abhigyan")
@@ -1031,11 +1189,15 @@ def create_main_app():
                 st.warning("Please enter your name before sending a message.")
             else:
                 sent = send_telegram_message(user_message, sender_name)
-            if sent:
-                st.success("✅ Your message was sent to Abhigyan on Telegram!")
-                st.session_state.love_messages.append({"role": "user", "content": user_message})
-            else:
-                st.error("❌ Failed to send message. Please try again later.")
+                if sent:
+                    st.success("✅ Your message was sent to Abhigyan on Telegram!")
+                    st.session_state.love_messages.append({
+                        "sender": sender_name,
+                        "content": user_message
+                    })
+                else:
+                    st.error("❌ Failed to send message. Please try again later.")
+
 
 
     
